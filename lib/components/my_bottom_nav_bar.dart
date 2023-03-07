@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:project_ctu/pages/uploadImageTest.dart';
 
 import '../constants.dart';
 
@@ -32,7 +33,12 @@ class MyBottomNavBar extends StatelessWidget {
           ),
           IconButton(
             icon: SvgPicture.asset("assets/icons/heart-icon.svg"),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => gotoUploadImage(context)));
+            },
           ),
           IconButton(
             icon: SvgPicture.asset("assets/icons/user-icon.svg"),
@@ -41,5 +47,9 @@ class MyBottomNavBar extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget gotoUploadImage(BuildContext context) {
+    return UpLoadImage();
   }
 }

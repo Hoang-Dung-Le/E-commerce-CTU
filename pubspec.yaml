@@ -43,6 +43,9 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   http: ^0.13.5
   dropdown_button2: ^1.9.3
+  io: ^1.0.4
+  image_picker: ^0.8.6+4
+  flutter_html: ^0.11.1
 
 dev_dependencies:
   flutter_test:
