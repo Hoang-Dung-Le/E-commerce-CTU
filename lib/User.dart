@@ -1,10 +1,22 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 class User {
-  int? user_id;
-  String? email;
-  String? tendang_nhap;
-  String? password;
-  int? fac_id;
-  int? img_id;
+  int? user_id = 0;
+  String? email = "";
+  String? tendang_nhap = "";
+  String? password = "";
+  int? fac_id = 12;
+  int? img_id = 0;
+
+  // User() {
+  //   this.user_id = 0;
+  //   this.email = "";
+  //   this.tendang_nhap = "";
+  //   this.password = "";
+  //   this.fac_id = 12;
+  //   this.img_id = 0;
+  // }
 
   User(
       {required this.user_id,
@@ -23,4 +35,6 @@ class User {
         fac_id: json['fac_id'],
         img_id: json['img_id']);
   }
+
+  int get userId => this.userId;
 }
