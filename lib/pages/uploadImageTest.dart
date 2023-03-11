@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ import 'package:project_ctu/screens/home/components/login_check.dart';
 import 'package:project_ctu/user_provider.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
+
+import '../screens/home/home_screen.dart';
 
 class UpLoadImage extends StatefulWidget {
   const UpLoadImage({super.key});
@@ -150,22 +153,47 @@ class _UpLoadImageState extends State<UpLoadImage> {
   }
 
   void SubmitButton() {
-    // print(_controllerChiTiet.text);
-    // print(_controllerGiaThanh.text);
-    // print(_controllerMonHoc.text);
-    // print(_controllerTacGia.text);
-    // print(selectedValue);
-    // // print(Provider.of<LoginCheck>(context).getUserId.toString());
-    // print(context.read<LoginCheck>().getUserId.toString() + "day la userid");
-    // print();
-    // _futureUser;
-    print("img vua upload " + img_id_uploaded);
+    print("img vua upload " + parse(img_id_uploaded).toString());
+    int idx = genderItems.indexWhere((element) => element == selectedValue) + 1;
+    print("user id : " + context.read<LoginCheck>().getUserId.toString());
+    print(_controllerGiaThanh.text.toString());
+    print(_controllerChiTiet.text.toString());
+    print(_controllerMonHoc.text.toString());
+    print(_controllerTacGia.text.toString());
+    print(_controllerTenTaiLieu.text.toString());
+    print('Day la khoa : ' + idx.toString());
+    Future<Products> _futureProduct = uploadProduct(
+        context.read<LoginCheck>().getUserId.toString(),
+        _controllerGiaThanh.text.toString(),
+        parse(img_id_uploaded).toString(),
+        idx.toString(),
+        _controllerTenTaiLieu.text.toString(),
+        _controllerMonHoc.text.toString(),
+        _controllerTacGia.text.toString(),
+        _controllerTacGia.text.toString());
+    _futureProduct.then((value) => {
+          if (value.fac_id != 12)
+            {Navigator.push(context, MaterialPageRoute(builder: goToHome))}
+        });
+  }
+
+  Widget goToHome(BuildContext context) {
+    return HomeScreen();
+  }
+
+  int parse(string_test) {
+    int result = 0;
+    for (int i = 0; i < string_test.length; i++) {
+      if (int.tryParse(string_test[i]) != null) {
+        result = result * 10 + int.parse(string_test[i]);
+      }
+    }
+    return result;
   }
 
   Future<Products> uploadProduct(
       String user_id,
       String price,
-      String type,
       String img_id,
       String fac_id,
       String name,
@@ -180,7 +208,6 @@ class _UpLoadImageState extends State<UpLoadImage> {
       body: jsonEncode(<String, String>{
         "user_id": user_id,
         "price": price,
-        "type": type,
         "img_id": img_id,
         "fac_id": fac_id,
         "name": name,
@@ -194,7 +221,6 @@ class _UpLoadImageState extends State<UpLoadImage> {
       return Products.fromJson(jsonDecode(response.body));
     } else {
       return Products(
-          product_id: 0,
           user_id: 0,
           price: 0,
           type: 0,
@@ -262,13 +288,10 @@ class _UpLoadImageState extends State<UpLoadImage> {
         'picture', File(img!.path).readAsBytesSync(),
         filename: img!.path));
     var res = await request.send();
-    print(res.headers.keys.toString() + " day la header");
-    // print(res.toString());
-    // res.stream.;
+    // print(res.headers.keys.toString() + " day la header");
     var res_1 = await res.stream.bytesToString();
-    // res_1 = Set.from(res_1);
-
     img_id_uploaded = res_1;
+    print("day la res 1 " + res_1.toString());
     setState(() {
       image = img;
     });

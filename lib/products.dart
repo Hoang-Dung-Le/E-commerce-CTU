@@ -1,19 +1,17 @@
 class Products {
-  final int product_id;
-  final int user_id;
-  final int price;
-  final int type;
-  final int img_id;
-  final int fac_id;
-  final String name;
-  final String subject;
-  final String author;
-  final String detail;
-  final int hidden;
-  final String product_date;
+  int? user_id;
+  int? price;
+  int? type;
+  int? img_id;
+  int? fac_id;
+  String? name;
+  String? subject;
+  String? author;
+  String? detail;
+  int? hidden;
+  String? product_date;
 
-  const Products({
-    required this.product_id,
+  Products({
     required this.user_id,
     required this.price,
     required this.type,
@@ -27,13 +25,8 @@ class Products {
     required this.product_date,
   });
 
-  void print_value() {
-    print(product_id.toString() + name.toString());
-  }
-
   factory Products.fromJson(Map<String, dynamic> json) {
     return Products(
-        product_id: json['product_id'],
         user_id: json['user_id'],
         price: json['price'],
         type: json['type'],
