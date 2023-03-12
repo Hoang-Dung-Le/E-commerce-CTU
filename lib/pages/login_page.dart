@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:project_ctu/common/theme_helper.dart';
 import 'package:project_ctu/products.dart';
 import 'package:project_ctu/screens/home/components/login_check.dart';
-import 'package:project_ctu/screens/home/components/test_1.dart';
+import 'package:project_ctu/screens/home/components/recommend.dart';
 import 'package:project_ctu/screens/home/home_screen.dart';
 import 'package:project_ctu/user_provider.dart';
 import 'package:provider/provider.dart';

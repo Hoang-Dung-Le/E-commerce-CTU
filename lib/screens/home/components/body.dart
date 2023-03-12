@@ -3,7 +3,7 @@ import 'package:project_ctu/constants.dart';
 
 import 'featurred_plants.dart';
 import 'header_with_seachbox.dart';
-import 'test_1.dart';
+import 'recommend.dart';
 import 'title_with_more_bbtn.dart';
 
 class Body extends StatelessWidget {

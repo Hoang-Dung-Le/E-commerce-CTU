@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:project_ctu/pages/question_display.dart';
 import 'package:project_ctu/pages/uploadImageTest.dart';
 
 import '../constants.dart';
@@ -42,11 +43,20 @@ class MyBottomNavBar extends StatelessWidget {
           ),
           IconButton(
             icon: SvgPicture.asset("assets/icons/user-icon.svg"),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => goToQuestionPage(context)));
+            },
           ),
         ],
       ),
     );
+  }
+
+  Widget goToQuestionPage(BuildContext context) {
+    return Question_Display();
   }
 
   Widget gotoUploadImage(BuildContext context) {
