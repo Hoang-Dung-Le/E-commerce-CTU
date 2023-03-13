@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project_ctu/pages/question_display.dart';
-import 'package:project_ctu/pages/uploadImageTest.dart';
+import 'package:project_ctu/pages/uploadProduct.dart';
 
 import '../constants.dart';
 
