@@ -20,21 +20,9 @@ class LoginCheck with ChangeNotifier {
     );
 
     if (response.statusCode == 200) {
-      // If the server did return a 201 CREATED response,
-      // then parse the JSON.
-      // print(response.body.runtimeType);
-      // usermodel.user = User.fromJson(jsonDecode(response.body));
-      // return User.fromJson(jsonDecode(response.body));
       this.user = User.fromJson(jsonDecode(response.body));
       return 1;
     } else {
-      // return User(
-      //     email: "",
-      //     user_id: 0,
-      //     tendang_nhap: "",
-      //     password: "",
-      //     fac_id: 12,
-      //     img_id: 0);
       return 0;
     }
   }

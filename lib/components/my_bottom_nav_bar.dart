@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:project_ctu/pages/comment_page.dart';
 import 'package:project_ctu/pages/question_display.dart';
 import 'package:project_ctu/pages/uploadProduct.dart';
 
@@ -50,6 +51,15 @@ class MyBottomNavBar extends StatelessWidget {
                       builder: (context) => goToQuestionPage(context)));
             },
           ),
+          IconButton(
+            icon: SvgPicture.asset("assets/icons/user-icon.svg"),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => goToCommentPage(context)));
+            },
+          ),
         ],
       ),
     );
@@ -57,6 +67,12 @@ class MyBottomNavBar extends StatelessWidget {
 
   Widget goToQuestionPage(BuildContext context) {
     return Question_Display();
+  }
+
+  Widget goToCommentPage(BuildContext context) {
+    return CommentPage(
+      title: 'Demo',
+    );
   }
 
   Widget gotoUploadImage(BuildContext context) {

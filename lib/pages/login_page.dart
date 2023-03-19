@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ctu/common/theme_helper.dart';
 import 'package:project_ctu/products.dart';
+import 'package:project_ctu/question_provider.dart';
 import 'package:project_ctu/screens/home/components/login_check.dart';
 import 'package:project_ctu/screens/home/components/recommend.dart';
 import 'package:project_ctu/screens/home/home_screen.dart';
@@ -35,8 +36,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => LoginCheck(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => LoginCheck()),
+      ],
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -128,13 +131,6 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                     onPressed: () {
-                                      //After successful login we will redirect to profile page. Let's create profile page now
-                                      // onClicked();
-
-                                      // _futureUser = createUser(
-                                      //     _userController.text,
-                                      //     _passController.text);
-
                                       var result = (context)
                                           .read<LoginCheck>()
                                           .login(_userController.text,
@@ -149,26 +145,6 @@ class _LoginPageState extends State<LoginPage> {
                                                             goToHome(context)))
                                               }
                                           });
-
-                                      // _futureUser.then((value) => {
-                                      //       if (value.fac_id != 12)
-                                      //         {
-                                      //           // userModel
-                                      //           // context
-                                      //           //     .read<UserProvider>()
-                                      //           //     .user = value,
-                                      //           // }
-                                      //           // print(Provider.of<UserProvider>(
-                                      //           //         context)
-                                      //           //     .user
-                                      //           //     .toString()),
-                                      //           Navigator.pushReplacement(
-                                      //               context,
-                                      //               MaterialPageRoute(
-                                      //                   builder: (context) =>
-                                      //                       goToHome(context)))
-                                      //         }
-                                      //     });
                                     },
                                   ),
                                 ),

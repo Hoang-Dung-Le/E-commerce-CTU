@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:project_ctu/components/my_bottom_nav_bar.dart';
 import 'package:project_ctu/pages/login_page.dart';
+import 'package:project_ctu/question_provider.dart';
 import 'package:project_ctu/screens/home/components/body.dart';
+import 'package:provider/provider.dart';
 
 // class HomeScreen extends StatefulWidget {
 //   @override
@@ -49,20 +51,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   leading: IconButton(
-      //     onPressed: () {
-      //       Navigator.push(
-      //         context,
-      //         MaterialPageRoute(builder: (context) => LoginPage()),
-      //       );
-      //     },
-      //     icon: Icon(Icons.arrow_back_ios),
-      //   ),
-      // ),
-      body: Body(),
-      bottomNavigationBar: MyBottomNavBar(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => QuestionProvider()),
+      ],
+      child: Scaffold(
+        // appBar: AppBar(
+        //   leading: IconButton(
+        //     onPressed: () {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(builder: (context) => LoginPage()),
+        //       );
+        //     },
+        //     icon: Icon(Icons.arrow_back_ios),
+        //   ),
+        // ),
+        body: Body(),
+        bottomNavigationBar: MyBottomNavBar(),
+      ),
     );
   }
 }

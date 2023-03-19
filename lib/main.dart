@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_ctu/User.dart';
 import 'package:project_ctu/constants.dart';
 import 'package:project_ctu/pages/login_page.dart';
+import 'package:project_ctu/question_provider.dart';
 import 'package:project_ctu/screens/home/components/login_check.dart';
 import 'package:project_ctu/screens/home/home_screen.dart';
 import 'package:flutter/services.dart';
@@ -16,8 +17,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
-    return ChangeNotifierProvider(
-      create: (context) => LoginCheck(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => LoginCheck()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Plant App',

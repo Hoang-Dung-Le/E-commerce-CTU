@@ -3,11 +3,14 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:project_ctu/pages/question.dart';
 import 'package:project_ctu/pages/uploadQuestion.dart';
+import 'package:project_ctu/question_provider.dart';
 import 'package:project_ctu/screens/home/components/header_with_seachbox.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:project_ctu/screens/home/components/question_detail.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants.dart';
 
@@ -198,7 +201,10 @@ class _Question_DisplayState extends State<Question_Display> {
                                   border: new Border(
                                       right: new BorderSide(
                                           width: 1.0, color: Colors.white24))),
-                              child: Icon(Icons.autorenew, color: Colors.white),
+                              child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: Icon(Icons.autorenew,
+                                      color: Colors.white)),
                             ),
                             title: Text(
                               questions[index].title.toString(),
@@ -216,8 +222,21 @@ class _Question_DisplayState extends State<Question_Display> {
                                     style: TextStyle(color: Colors.white))
                               ],
                             ),
-                            trailing: Icon(Icons.keyboard_arrow_right,
-                                color: Colors.white, size: 30.0)),
+                            trailing: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            gotoQuestionDetail(
+                                                context,
+                                                questions[index]
+                                                    .qes_id
+                                                    .toString())));
+                              },
+                              child: Icon(Icons.keyboard_arrow_right,
+                                  color: Colors.white, size: 30.0),
+                            )),
                       ),
                     );
                     ;
@@ -241,6 +260,13 @@ class _Question_DisplayState extends State<Question_Display> {
 
   void onSubmit() {}
   Widget gotoUploadQuestions(BuildContext context) {
+    print((context).read<QuestionProvider>().getTitle.toString() + " aka");
     return UploadQuestions();
+  }
+
+  Widget gotoQuestionDetail(BuildContext context, String qes_id) {
+    return QuestionDetail(
+      qes_id: qes_id,
+    );
   }
 }

@@ -20,4 +20,7 @@ class Question {
         detail: json['detail'],
         img_id: json['img_id']);
   }
+
+  int get getQesId => this.getQesId;
+  String? get getTitle => this.title;
 }
