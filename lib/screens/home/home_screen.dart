@@ -56,17 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ChangeNotifierProvider(create: (context) => QuestionProvider()),
       ],
       child: Scaffold(
-        // appBar: AppBar(
-        //   leading: IconButton(
-        //     onPressed: () {
-        //       Navigator.push(
-        //         context,
-        //         MaterialPageRoute(builder: (context) => LoginPage()),
-        //       );
-        //     },
-        //     icon: Icon(Icons.arrow_back_ios),
-        //   ),
-        // ),
         body: Body(),
         bottomNavigationBar: MyBottomNavBar(),
       ),

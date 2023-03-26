@@ -122,7 +122,7 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
   Widget build(BuildContext context) {
     // Future<List<Products>> _futureProducts = getProducts();
     // print(_futureProducts.toString());
-    var url_test = "assets/images/image_2.png";
+    var url_test = "http://192.168.1.17:3000/images/gtcpp.png";
     // D:\Code\School\NodejsTutorial\src\public\images\
     if (isLoading) {
       return Center(
@@ -201,19 +201,19 @@ class RecomendPlantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.only(
-        left: kDefaultPadding,
-        top: kDefaultPadding / 2,
-        bottom: kDefaultPadding * 2.5,
-      ),
+      // margin: EdgeInsets.only(
+      //   left: kDefaultPadding,
+      //   top: kDefaultPadding / 2,
+      //   bottom: kDefaultPadding * 2.5,
+      // ),
       width: size.width * 0.4,
       child: Column(
         children: <Widget>[
-          Image.network(image),
+          Container(height: 130, child: Image.network(image)),
           GestureDetector(
             onTap: press,
             child: Container(
-              padding: EdgeInsets.all(kDefaultPadding / 2),
+              padding: EdgeInsets.all(kDefaultPadding / 3),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
@@ -228,26 +228,21 @@ class RecomendPlantCard extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Row(
+              child: Column(
                 children: <Widget>[
                   RichText(
+                    overflow: TextOverflow.ellipsis,
                     text: TextSpan(
                       children: [
                         TextSpan(
-                            text: "$title\n".toUpperCase(),
-                            style: Theme.of(context).textTheme.button),
-                        TextSpan(
-                          text: "$country".toUpperCase(),
-                          style: TextStyle(
-                            color: kPrimaryColor.withOpacity(0.5),
-                          ),
+                          text: "$title",
+                          style: Theme.of(context).textTheme.button,
                         ),
                       ],
                     ),
                   ),
-                  Spacer(),
                   Text(
-                    '\$$price',
+                    '$price\K',
                     style: Theme.of(context)
                         .textTheme
                         .button
