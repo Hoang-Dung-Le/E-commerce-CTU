@@ -2,6 +2,7 @@
     package="com.example.project_ctu">
    <application
         android:label="project_ctu"
+        android:usesCleartextTraffic="true"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

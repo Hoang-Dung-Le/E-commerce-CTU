@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +13,8 @@ import 'package:project_ctu/user_provider.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
 
+import '../components/my_bottom_nav_bar.dart';
+import '../constants.dart';
 import '../screens/home/home_screen.dart';
 
 class UpLoadImage extends StatefulWidget {
@@ -46,108 +47,206 @@ class _UpLoadImageState extends State<UpLoadImage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return ChangeNotifierProvider(
       create: (context) => LoginCheck(),
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-              child: Form(
-            child: Column(
-              children: [
-                TextField(
-                  controller: _controllerTenTaiLieu,
-                  decoration: ThemeHelper().textInputDecoration('Tên tài liệu'),
-                ),
-                TextField(
-                  controller: _controllerMonHoc,
-                  decoration: ThemeHelper().textInputDecoration('Môn học'),
-                ),
-                TextField(
-                  controller: _controllerTacGia,
-                  decoration: ThemeHelper().textInputDecoration('Tác giả'),
-                ),
-                TextField(
-                  controller: _controllerChiTiet,
-                  decoration: ThemeHelper().textInputDecoration('Chi tiet'),
-                ),
-                TextField(
-                  controller: _controllerGiaThanh,
-                  decoration: ThemeHelper()
-                      .textInputDecoration('gia thanh(don vi nghin)'),
-                ),
-                // TextField(
-                //   decoration: ThemeHelper().textInputDecoration(),
-                // ),
-                DropdownButtonHideUnderline(
-                  child: DropdownButton2(
-                    hint: Text(
-                      'Select Item',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).hintColor,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(bottom: kDefaultPadding),
+                // It will cover 20% of our total height
+                height: size.height * 0.15,
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(
+                        left: kDefaultPadding,
+                        right: kDefaultPadding,
+                        bottom: 36 + kDefaultPadding,
+                      ),
+                      height: size.height * 0.2 - 30,
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(36),
+                          bottomRight: Radius.circular(36),
+                        ),
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            'Hi Uishopy!',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline5
+                                ?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                          ),
+                          Spacer(),
+                          Image.asset("assets/images/logo.png")
+                        ],
                       ),
                     ),
-                    items: genderItems
-                        .map((item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                    value: selectedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedValue = value as String;
-                      });
-                    },
-                    // buttonStyleData: const ButtonStyleData(
-                    //   height: 40,
-                    //   width: 140,
-                    // ),
-                    // menuItemStyleData: const MenuItemStyleData(
-                    //   height: 40,
-                    // ),
-                  ),
+                  ],
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    myAlert();
-                  },
-                  child: Text('Upload Photo'),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                //if image not null show the image
-                //if image null show text
-                image != null
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.file(
-                            //to show image, you type like this.
-                            File(image!.path),
-                            fit: BoxFit.cover,
-                            width: MediaQuery.of(context).size.width,
-                            height: 300,
-                          ),
-                        ),
-                      )
-                    : Text(
-                        "No Image",
-                        style: TextStyle(fontSize: 20),
+              ),
+              SingleChildScrollView(
+                  child: Form(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _controllerTenTaiLieu,
+                        decoration:
+                            ThemeHelper().textInputDecoration('Tên tài liệu'),
+                        validator: (val) {
+                          if (!(val!.isEmpty)) {
+                            return "Không được bỏ trống";
+                          }
+                          return null;
+                        },
                       ),
-                ElevatedButton(onPressed: SubmitButton, child: Text('Submit'))
-              ],
-            ),
-          )),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _controllerMonHoc,
+                        decoration:
+                            ThemeHelper().textInputDecoration('Môn học'),
+                        validator: (val) {
+                          if ((val!.isEmpty)) {
+                            return "Không được bỏ trống";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _controllerTacGia,
+                        decoration:
+                            ThemeHelper().textInputDecoration('Tác giả'),
+                        validator: (val) {
+                          if ((val!.isEmpty)) {
+                            return "Không được bỏ trống";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _controllerChiTiet,
+                        decoration:
+                            ThemeHelper().textInputDecoration('Chi tiet'),
+                        validator: (val) {
+                          if ((val!.isEmpty)) {
+                            return "Không được bỏ trống";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        controller: _controllerGiaThanh,
+                        decoration: ThemeHelper()
+                            .textInputDecoration('gia thanh(don vi nghin)'),
+                        validator: (val) {
+                          if ((val!.isEmpty) ||
+                              RegExp(r"^[0-9]*$").hasMatch(val)) {
+                            return "Giá thành phải là số";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    // TextField(
+                    //   decoration: ThemeHelper().textInputDecoration(),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2(
+                          hint: Text(
+                            'Select Item',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).hintColor,
+                            ),
+                          ),
+                          items: genderItems
+                              .map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                          value: selectedValue,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedValue = value as String;
+                            });
+                          },
+                          // buttonStyleData: const ButtonStyleData(
+                          //   height: 40,
+                          //   width: 140,
+                          // ),
+                          // menuItemStyleData: const MenuItemStyleData(
+                          //   height: 40,
+                          // ),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        myAlert();
+                      },
+                      child: Text('Upload Photo'),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    //if image not null show the image
+                    //if image null show text
+                    image != null
+                        ? Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(
+                                //to show image, you type like this.
+                                File(image!.path),
+                                fit: BoxFit.cover,
+                                width: MediaQuery.of(context).size.width,
+                                height: 300,
+                              ),
+                            ),
+                          )
+                        : Text(
+                            "No Image",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                    ElevatedButton(
+                        onPressed: SubmitButton, child: Text('Submit'))
+                  ],
+                ),
+              )),
+            ],
+          ),
         ),
+        bottomNavigationBar: MyBottomNavBar(),
       ),
     );
   }

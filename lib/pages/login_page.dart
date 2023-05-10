@@ -19,6 +19,7 @@ import 'widgets/header_widget.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -33,6 +34,14 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _userController = new TextEditingController();
   TextEditingController _passController = new TextEditingController();
   late Future<User> _futureUser;
+  late SharedPreferences _prefs;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // _prefs = await SharedPreferences.getInstance();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,15 +139,25 @@ class _LoginPageState extends State<LoginPage> {
                                             color: Colors.white),
                                       ),
                                     ),
-                                    onPressed: () {
+                                    onPressed: () async {
                                       var result = (context)
                                           .read<LoginCheck>()
                                           .login(_userController.text,
                                               _passController.text);
-                                      result.then((value) => {
+                                      result.then((value) async => {
                                             if (value == 1)
                                               {
-                                                Navigator.pushReplacement(
+                                                print((context)
+                                                    .read<LoginCheck>()
+                                                    .getUserId
+                                                    .toString()),
+                                                await saveLoginStatus(
+                                                    true,
+                                                    (context)
+                                                        .read<LoginCheck>()
+                                                        .getUserId
+                                                        .toString()),
+                                                await Navigator.pushReplacement(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
@@ -180,6 +199,12 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<void> saveLoginStatus(bool isLoggedIn, String user_id) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', isLoggedIn);
+    prefs.setString('user_id', user_id);
   }
 
   void onClicked() {

@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:project_ctu/main.dart';
 
-import 'package:project_ctu/main_1.dart';
+// import 'package:project_ctu/screens/home/components/chat.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

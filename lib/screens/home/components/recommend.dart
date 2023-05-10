@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ctu/img.dart';
+import 'package:project_ctu/screens/details/components/detail_product.dart';
 import 'package:project_ctu/screens/details/details_screen.dart';
 
 import '../../../constants.dart';
@@ -11,8 +12,11 @@ import 'package:http/http.dart' as http;
 import '../../../products.dart';
 
 class RecomendsPlants extends StatefulWidget {
+  const RecomendsPlants({super.key, required this.fac_id});
+
   @override
-  State<RecomendsPlants> createState() => _RecomendsPlantsState();
+  State<RecomendsPlants> createState() => _RecomendsPlantsState(fac_id);
+  final String fac_id;
 }
 
 class _RecomendsPlantsState extends State<RecomendsPlants> {
@@ -20,6 +24,9 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
   List<ImageFromApi> urlImgs = [];
   late Future<ImageFromApi> urlImg;
   bool isLoading = false;
+  final String fac_id;
+
+  _RecomendsPlantsState(this.fac_id);
   @override
   void initState() {
     // TODO: implement initState
@@ -33,7 +40,7 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
     setState(() {
       isLoading = true;
     });
-    Future<List<Products>> _futureProducts = getProducts();
+    Future<List<Products>> _futureProducts = getProducts(fac_id);
     List<Products> products_temp = [];
     List<ImageFromApi> urlImgs_temp = [];
     var urlImg;
@@ -56,9 +63,14 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
     // print(urlImgs.length);
   }
 
-  Future<List<Products>> getProducts() async {
-    final response = await http
-        .get(Uri.parse('http://10.0.2.2:3000/api/v1/getRecommendedProducts'));
+  Future<List<Products>> getProducts(String fac_id) async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:3000/api/v1/getRecommendedProducts'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{"fac_id": fac_id}),
+    );
 
     if (response.statusCode == 200) {
       var result = jsonDecode(response.body);
@@ -142,7 +154,7 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
       child: Row(
         children: <Widget>[
           RecomendPlantCard(
-            image: url_test,
+            image: ip + urlImgs[0].url,
             title: "Samantha",
             country: "Russia",
             price: 440,
@@ -151,13 +163,16 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailsScreen(),
+                  builder: (context) => Detail(
+                    product: products[0],
+                    url: ip + urlImgs[0].url,
+                  ),
                 ),
               );
             },
           ),
           RecomendPlantCard(
-            image: url_test,
+            image: ip + urlImgs[1].url,
             title: "Angelica",
             country: "Russia",
             price: 440,
@@ -165,13 +180,16 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailsScreen(),
+                  builder: (context) => Detail(
+                    product: products[1],
+                    url: url_test,
+                  ),
                 ),
               );
             },
           ),
           RecomendPlantCard(
-            image: url_test,
+            image: ip + urlImgs[2].url,
             title: "Samantha",
             country: "Russia",
             price: 440,

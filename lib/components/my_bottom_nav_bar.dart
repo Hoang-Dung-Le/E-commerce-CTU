@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project_ctu/pages/comment_page.dart';
+import 'package:project_ctu/pages/profile_page.dart';
 import 'package:project_ctu/pages/question_display.dart';
 import 'package:project_ctu/pages/uploadProduct.dart';
 
 import '../constants.dart';
+import '../screens/home/user_profile.dart';
 
 class MyBottomNavBar extends StatelessWidget {
   @override
@@ -70,9 +72,7 @@ class MyBottomNavBar extends StatelessWidget {
   }
 
   Widget goToCommentPage(BuildContext context) {
-    return CommentPage(
-      title: 'Demo',
-    );
+    return ProfileUserPage();
   }
 
   Widget gotoUploadImage(BuildContext context) {

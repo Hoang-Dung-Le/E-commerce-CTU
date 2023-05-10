@@ -110,14 +110,23 @@ class Body extends StatelessWidget {
             ),
           ),
           TitleWithMoreBtn(title: "Tài liệu Trường CNTT&TT", press: () {}),
-          // RecomendsPlants(),
-          FeaturedPlants(),
+          RecomendsPlants(
+            fac_id: "1",
+          ),
+          // FeaturedPlants(),
           TitleWithMoreBtn(title: "Tài liệu trường Bách Khoa", press: () {}),
-          FeaturedPlants(),
+          // FeaturedPlants(fac_id: "2"),
+          RecomendsPlants(
+            fac_id: "2",
+          ),
           TitleWithMoreBtn(title: "Tài liệu trường Thuỷ sản", press: () {}),
-          FeaturedPlants(),
+          RecomendsPlants(
+            fac_id: "3",
+          ),
           TitleWithMoreBtn(title: "Tài liệu trường Kinh Tế", press: () {}),
-          FeaturedPlants(),
+          RecomendsPlants(
+            fac_id: "4",
+          ),
           SizedBox(height: kDefaultPadding),
         ],
       ),

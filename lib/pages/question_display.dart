@@ -177,73 +177,30 @@ class _Question_DisplayState extends State<Question_Display> {
                 ],
               ),
             ),
-            SingleChildScrollView(
-                child: Container(
-              child: SingleChildScrollView(
-                child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: 3,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      elevation: 8.0,
-                      margin: new EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 6.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(64, 75, 96, .9)),
-                        child: ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 10.0),
-                            leading: Container(
-                              padding: EdgeInsets.only(right: 12.0),
-                              decoration: new BoxDecoration(
-                                  border: new Border(
-                                      right: new BorderSide(
-                                          width: 1.0, color: Colors.white24))),
-                              child: ElevatedButton(
-                                  onPressed: () {},
-                                  child: Icon(Icons.autorenew,
-                                      color: Colors.white)),
-                            ),
-                            title: Text(
-                              questions[index].title.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
-
-                            subtitle: Row(
-                              children: <Widget>[
-                                Icon(Icons.linear_scale,
-                                    color: Colors.yellowAccent),
-                                Text(" Intermediate",
-                                    style: TextStyle(color: Colors.white))
-                              ],
-                            ),
-                            trailing: ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            gotoQuestionDetail(
-                                                context,
-                                                questions[index]
-                                                    .qes_id
-                                                    .toString())));
-                              },
-                              child: Icon(Icons.keyboard_arrow_right,
-                                  color: Colors.white, size: 30.0),
-                            )),
-                      ),
-                    );
-                    ;
-                  },
-                ),
+            SizedBox(
+              height: size.height * 0.7,
+              child: ListView.separated(
+                itemCount: questions.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    onTap: () {
+                      print('Clicked on item #$index'); // Print to console
+                    },
+                    title: Text(questions[index].title.toString()),
+                    subtitle: Text('Sample subtitle for item #$index'),
+                    leading: Container(
+                      height: 50,
+                      width: 50,
+                      color: Colors.green,
+                    ),
+                    trailing: Icon(Icons.edit),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Divider();
+                },
               ),
-            ))
+            ),
           ],
         ),
       ),

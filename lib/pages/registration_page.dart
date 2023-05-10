@@ -4,7 +4,13 @@ import 'package:project_ctu/common/theme_helper.dart';
 import 'package:project_ctu/pages/widgets/header_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:project_ctu/screens/home/home_screen.dart';
+import 'dart:async';
 
+import '../User.dart';
+import '../screens/home/components/home_page.dart';
 import 'profile_page.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -18,6 +24,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
   final _formKey = GlobalKey<FormState>();
   bool checkedValue = false;
   bool checkboxValue = false;
+
+  bool userValid = true;
+
+  TextEditingController _userController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordConller = new TextEditingController();
+  TextEditingController _passwordConller2 = new TextEditingController();
+  TextEditingController _collegeController = new TextEditingController();
+
   final List<String> genderItems = [
     'Trường CNTT&TT',
     'Trường Bách Khoa',
@@ -27,6 +42,41 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   String? selectedValue;
   final _formKey2 = GlobalKey<FormState>();
+
+  Future<User> createUser(String email, String tendang_nhap, String password,
+      String fac_id, String img_id) async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:3000/api/v1/create-user'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email,
+        'tendang_nhap': tendang_nhap,
+        'password': password,
+        'fac_id': fac_id,
+        'img_id': img_id
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print(response.body + " this is body");
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      return User(
+          email: "",
+          user_id: 0,
+          tendang_nhap: "",
+          password: "",
+          fac_id: 0,
+          img_id: 0);
+    }
+  }
+
+  Widget goToHome(BuildContext context) {
+    return HomeScreen();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,8 +138,18 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         Container(
                           child: TextFormField(
+                            controller: _userController,
                             decoration: ThemeHelper().textInputDecoration(
                                 'user name', 'Enter your user name'),
+                            validator: (val) {
+                              if (!(val!.isEmpty) && val.length < 6) {
+                                return "Tên đăng nhập phải từ 6 kí tự";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              userValid = true;
+                            },
                           ),
                           decoration: ThemeHelper().inputBoxDecorationShaddow(),
                         ),
@@ -104,7 +164,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               isDense: true,
                               contentPadding: EdgeInsets.zero,
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(40),
                               ),
                               //Add more decoration as you want here
                               //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
@@ -112,14 +172,14 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             isExpanded: true,
                             hint: const Text(
                               'Select Your faculty',
-                              style: TextStyle(fontSize: 14),
+                              style: TextStyle(fontSize: 12),
                             ),
                             icon: const Icon(
                               Icons.arrow_drop_down,
                               color: Colors.black45,
                             ),
                             iconSize: 30,
-                            buttonHeight: 60,
+                            buttonHeight: 49,
                             buttonPadding:
                                 const EdgeInsets.only(left: 20, right: 10),
                             dropdownDecoration: BoxDecoration(
@@ -138,7 +198,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                                 .toList(),
                             validator: (value) {
                               if (value == null) {
-                                return 'Please select gender.';
+                                return 'Vui lòng chọn trường.';
                               }
                             },
                             onChanged: (value) {
@@ -158,6 +218,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         SizedBox(height: 20.0),
                         Container(
                           child: TextFormField(
+                            controller: _emailController,
                             decoration: ThemeHelper().textInputDecoration(
                                 "E-mail address", "Enter your email"),
                             keyboardType: TextInputType.emailAddress,
@@ -175,6 +236,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         SizedBox(height: 20.0),
                         Container(
                           child: TextFormField(
+                            controller: _passwordConller,
                             obscureText: true,
                             decoration: ThemeHelper().textInputDecoration(
                                 "Password*", "Enter your password"),
@@ -249,11 +311,33 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               ),
                             ),
                             onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) => ProfilePage()),
-                                    (Route<dynamic> route) => false);
+                              userValid = true;
+                              var idx = genderItems.indexWhere(
+                                      (element) => element == selectedValue) +
+                                  1;
+                              Future<User> _futureUser = createUser(
+                                  _emailController.text,
+                                  _userController.text,
+                                  _passwordConller.text,
+                                  '${idx}',
+                                  '1');
+                              _futureUser.then((value) => {
+                                    if (value.tendang_nhap == "")
+                                      {userValid = false}
+                                    else
+                                      {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: goToHome))
+                                      }
+                                  });
+                              if (userValid == false) {
+                                var snackBar = SnackBar(
+                                    content: Text('Tên đăng nhập đã tồn tại'));
+                                // Step 3
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
                               }
                             },
                           ),

@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 
 import 'package:project_ctu/products.dart';
+import 'package:project_ctu/screens/details/components/detail_product.dart';
 import 'package:project_ctu/screens/home/components/recommend.dart';
 
 import '../../../components/my_bottom_nav_bar.dart';
@@ -239,7 +240,10 @@ class _SearchDocumentState extends State<SearchDocument> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailsScreen(),
+                          builder: (context) => Detail(
+                            product: products[index],
+                            url: urlImages[index],
+                          ),
                         ),
                       );
                     },
