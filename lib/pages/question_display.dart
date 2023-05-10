@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:project_ctu/pages/question.dart';
+import 'package:project_ctu/pages/questiondetail.dart';
 import 'package:project_ctu/pages/uploadQuestion.dart';
 import 'package:project_ctu/question_provider.dart';
 import 'package:project_ctu/screens/home/components/header_with_seachbox.dart';
@@ -184,7 +185,15 @@ class _Question_DisplayState extends State<Question_Display> {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     onTap: () {
-                      print('Clicked on item #$index'); // Print to console
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => gotoDetail(
+                                  context,
+                                  questions[index].detail.toString(),
+                                  questions[index]
+                                      .qes_id
+                                      .toString()))); // Print to console
                     },
                     title: Text(questions[index].title.toString()),
                     subtitle: Text('Sample subtitle for item #$index'),
@@ -217,12 +226,20 @@ class _Question_DisplayState extends State<Question_Display> {
 
   void onSubmit() {}
   Widget gotoUploadQuestions(BuildContext context) {
-    print((context).read<QuestionProvider>().getTitle.toString() + " aka");
+    // print((context).read<QuestionProvider>().getTitle.toString() + " aka");
     return UploadQuestions();
   }
 
   Widget gotoQuestionDetail(BuildContext context, String qes_id) {
     return QuestionDetail(
+      qes_id: qes_id,
+    );
+  }
+
+  Widget gotoDetail(BuildContext context, String qes, String qes_id) {
+    return QuestionPage(
+      comments: [],
+      question: qes,
       qes_id: qes_id,
     );
   }

@@ -26,22 +26,75 @@ class _ChatScreenState extends State<ChatScreen> {
   final dio = Dio();
   final TextEditingController _textController = TextEditingController();
   final List<String> _messages = [];
+  bool isLoading = false;
+
+  Future<void> createHistoryChat() async {
+    final response = await http.post(
+      Uri.parse('${widget.serverUrl}/api/v1/historyOfChat'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'senderId': widget.userId,
+        'recipientId': widget.recipientId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body)['data'];
+      for (int i = 0; i < result.length; i++) {
+        _messages.add(result[i]['send'].toString() + result[i]['detail']);
+      }
+    } else {
+      throw Exception('Failed to create album.');
+    }
+  }
+
+  void loading() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    var result = await createHistoryChat();
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void _getChatHistory() async {
+    try {
+      final response =
+          Dio().post('${widget.serverUrl}/api/v1/chathistory', data: {
+        'senderId': widget.userId,
+        'recipientId': widget.recipientId,
+      });
+      // final data = json.decode(response.body) as List<dynamic>;
+      // final messages = data.map((e) => e['message'] as String).toList();
+      // setState(() {
+      //   _messages.addAll(messages);
+      // });
+    } catch (e) {
+      print('Error getting chat history: $e');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
 
     // Connect to the server
-    super.initState();
+    // super.initState();
 
     // Connect to the server
+    loading();
     socket = IO.io(widget.serverUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
     });
 
     socket.connect();
-
+    // _getChatHistory();
     // Listen for incoming messages
     socket.on('message', (data) {
       setState(() {
@@ -63,39 +116,29 @@ class _ChatScreenState extends State<ChatScreen> {
 
     void _sendMessage(String message) async {
       // Send message to server
-      final response =
-          await Dio().post('${widget.serverUrl}/api/v1/message', data: {
+      final response = Dio().post('${widget.serverUrl}/api/v1/message', data: {
         'senderId': widget.userId,
         'recipientId': widget.recipientId,
         'message': message,
       });
 
-      if (response.statusCode == 200) {
-        // Message sent successfully
-      } else {
-        // Error sending message
-      }
+      // print((widget.userId + message).toString());
+      setState(() {
+        _messages.add((widget.userId + message).toString());
+      });
     }
 
-    void _getChatHistory() async {
-      try {
-        final response = await http.get(
-          Uri.parse(
-              '${widget.serverUrl}/chat/history?sender=${widget.userId}&recipient=${widget.recipientId}'),
-        );
-        final data = json.decode(response.body) as List<dynamic>;
-        final messages = data.map((e) => e['message'] as String).toList();
-        setState(() {
-          _messages.addAll(messages);
-        });
-      } catch (e) {
-        print('Error getting chat history: $e');
-      }
+    if (isLoading) {
+      return Center(
+        child: CircularProgressIndicator(
+          valueColor: new AlwaysStoppedAnimation<Color>(Color(0xff4f359b)),
+        ),
+      );
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat with ${widget.recipientId}'),
+        title: Text('Chat với người bán'),
       ),
       body: Column(
         children: [
@@ -121,7 +164,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         vertical: 8,
                       ),
                       child: Text(
-                        _messages[index].replaceAll('${widget.userId}: ', ''),
+                        // _messages[index].replaceAll('${widget.userId}: ', ''),
+                        _messages[index].substring(1),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
@@ -151,6 +195,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () {
+                    // print('đã send :' + _textController.text.toString());
                     _sendMessage(_textController.text);
                     _textController.clear();
                   },

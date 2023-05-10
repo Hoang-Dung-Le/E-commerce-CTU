@@ -45,7 +45,7 @@ class MyBottomNavBar extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: SvgPicture.asset("assets/icons/user-icon.svg"),
+            icon: SvgPicture.asset("assets/icons/ques.svg"),
             onPressed: () {
               Navigator.push(
                   context,
