@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 
 import '../../../User.dart';
 
 class LoginCheck with ChangeNotifier {
   late User user;
+  late String isPrinter;
 
   Future<int> login(String tendang_nhap, String password) async {
     final response = await http.post(
@@ -21,6 +23,9 @@ class LoginCheck with ChangeNotifier {
 
     if (response.statusCode == 200) {
       this.user = User.fromJson(jsonDecode(response.body));
+      isPrinter = jsonDecode(response.body)['isPrinter'].toString();
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('isPrinter', isPrinter);
       return 1;
     } else {
       return 0;
@@ -28,4 +33,5 @@ class LoginCheck with ChangeNotifier {
   }
 
   int? get getUserId => user.user_id;
+  String get getIsPrinter => isPrinter;
 }

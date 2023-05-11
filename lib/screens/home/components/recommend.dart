@@ -155,9 +155,8 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
         children: <Widget>[
           RecomendPlantCard(
             image: ip + urlImgs[0].url,
-            title: "Samantha",
-            country: "Russia",
-            price: 440,
+            title: products[0].name.toString(),
+            price: products[0].price!.toInt(),
             press: () {
               // print("gia tri product" + products.length.toString());
               Navigator.push(
@@ -173,16 +172,15 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
           ),
           RecomendPlantCard(
             image: ip + urlImgs[1].url,
-            title: "Angelica",
-            country: "Russia",
-            price: 440,
+            title: products[1].name.toString(),
+            price: products[1].price!.toInt(),
             press: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Detail(
                     product: products[1],
-                    url: url_test,
+                    url: ip + urlImgs[1].url,
                   ),
                 ),
               );
@@ -190,10 +188,19 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
           ),
           RecomendPlantCard(
             image: ip + urlImgs[2].url,
-            title: "Samantha",
-            country: "Russia",
-            price: 440,
-            press: () {},
+            title: products[2].name.toString(),
+            price: products[2].price!.toInt(),
+            press: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Detail(
+                    product: products[2],
+                    url: ip + urlImgs[2].url,
+                  ),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -205,13 +212,12 @@ class RecomendPlantCard extends StatelessWidget {
   const RecomendPlantCard({
     required this.image,
     required this.title,
-    required this.country,
     required this.price,
     required this.press,
   }) : super();
 
   final String image;
-  final String title, country;
+  final String title;
   final int price;
   final VoidCallback press;
 

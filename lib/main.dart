@@ -7,6 +7,7 @@ import 'package:project_ctu/pages/login_page.dart';
 import 'package:project_ctu/question_provider.dart';
 import 'package:project_ctu/screens/home/components/chat.dart';
 import 'package:project_ctu/screens/home/components/login_check.dart';
+import 'package:project_ctu/screens/home/components/printing_shop_screen.dart';
 import 'package:project_ctu/screens/home/home_screen.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -39,10 +40,22 @@ class MyApp extends StatelessWidget {
           textTheme: Theme.of(context).textTheme.apply(bodyColor: kTextColor),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: FutureBuilder<bool>(
-          future: isLoggedIn(),
+        home: FutureBuilder<List<bool>>(
+          future: Future.wait([isLoggedIn(), isPrintingShop()]),
           builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data == true) {
+            if (snapshot.hasData && snapshot.data![0] == true) {
+              // var r = isPrintingShop();
+              // // print('--------' + r.toString());
+              // int temp = 0;
+
+              // r.then((value) => {
+              //       if (value == 1) {temp = 1}
+              //     });
+              // print('____________' + temp.toString());
+              if (snapshot.data![1] == true) {
+                print('dã chay dô');
+                return ProfilePageShop();
+              }
               return HomeScreen();
             } else {
               return LoginPage();
@@ -57,4 +70,15 @@ class MyApp extends StatelessWidget {
 Future<bool> isLoggedIn() async {
   final prefs = await SharedPreferences.getInstance();
   return prefs.getBool('isLoggedIn') ?? false;
+}
+
+Future<bool> isPrintingShop() async {
+  final prefs = await SharedPreferences.getInstance();
+  var r = prefs.getString('isPrinter');
+  print("__________________gia tri cua r___________" + r.toString());
+  if (r == '1') {
+    print('dang return true');
+    return true;
+  } else
+    return false;
 }

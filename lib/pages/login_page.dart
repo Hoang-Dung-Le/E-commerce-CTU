@@ -5,6 +5,7 @@ import 'package:project_ctu/common/theme_helper.dart';
 import 'package:project_ctu/products.dart';
 import 'package:project_ctu/question_provider.dart';
 import 'package:project_ctu/screens/home/components/login_check.dart';
+import 'package:project_ctu/screens/home/components/printing_shop_screen.dart';
 import 'package:project_ctu/screens/home/components/recommend.dart';
 import 'package:project_ctu/screens/home/home_screen.dart';
 import 'package:project_ctu/user_provider.dart';
@@ -144,19 +145,29 @@ class _LoginPageState extends State<LoginPage> {
                                           .read<LoginCheck>()
                                           .login(_userController.text,
                                               _passController.text);
+                                      int temp;
                                       result.then((value) async => {
                                             if (value == 1)
                                               {
-                                                print((context)
-                                                    .read<LoginCheck>()
-                                                    .getUserId
-                                                    .toString()),
                                                 await saveLoginStatus(
-                                                    true,
-                                                    (context)
+                                                  true,
+                                                  (context)
+                                                      .read<LoginCheck>()
+                                                      .getUserId
+                                                      .toString(),
+                                                ),
+                                                if ((context)
                                                         .read<LoginCheck>()
-                                                        .getUserId
-                                                        .toString()),
+                                                        .getIsPrinter ==
+                                                    '1')
+                                                  {
+                                                    await Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                gotoShop(
+                                                                    context)))
+                                                  },
                                                 await Navigator.pushReplacement(
                                                     context,
                                                     MaterialPageRoute(
@@ -205,6 +216,7 @@ class _LoginPageState extends State<LoginPage> {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLoggedIn', isLoggedIn);
     prefs.setString('user_id', user_id);
+    // prefs.setString('isPrinter', isPrinter);
   }
 
   void onClicked() {
@@ -221,6 +233,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget goToHome(BuildContext context) {
     return HomeScreen();
+  }
+
+  Widget gotoShop(BuildContext context) {
+    return ProfilePageShop();
   }
 
   Future<User> createUser(String tendang_nhap, String password) async {

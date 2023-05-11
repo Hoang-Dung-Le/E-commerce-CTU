@@ -233,8 +233,7 @@ class _SearchDocumentState extends State<SearchDocument> {
                   return RecomendPlantCard(
                     image: urlImages[index],
                     title: products[index].name.toString(),
-                    country: "Russia",
-                    price: 440,
+                    price: products[index].price!.toInt(),
                     press: () {
                       // print("gia tri product" + products.length.toString());
                       Navigator.push(

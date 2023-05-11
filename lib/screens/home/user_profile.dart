@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:project_ctu/pages/login_page.dart';
 import 'package:project_ctu/screens/details/components/myproducts.dart';
+import 'package:project_ctu/screens/home/components/list_shop.dart';
 import 'package:project_ctu/screens/home/i4.dart';
+import 'package:project_ctu/screens/home/message_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import 'components/mess_user.dart';
+import 'mess_shop.dart';
 
 class ProfileUserPage extends StatefulWidget {
   @override
@@ -127,7 +132,31 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
                         MaterialPageRoute(
                             builder: (context) => gotoMyProduct(context)))
                   },
-              child: Text("các sản phẩm bạn đã đăng"))
+              child: Text("các sản phẩm bạn đã đăng")),
+          ElevatedButton(
+              onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => gotoShop(context)))
+                  },
+              child: Text("Shop in ấn")),
+          ElevatedButton(
+              onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => gotoChatPage(context)))
+                  },
+              child: Text("Lịch sử trò chuyện")),
+          ElevatedButton(
+              onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => gotoChatShop(context)))
+                  },
+              child: Text("Tin nhắn với shop"))
         ],
       ),
     );
@@ -135,5 +164,17 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
 
   Widget gotoMyProduct(BuildContext context) {
     return ProductGrid();
+  }
+
+  Widget gotoShop(BuildContext context) {
+    return ListShop();
+  }
+
+  Widget gotoChatPage(BuildContext context) {
+    return ChatListUser();
+  }
+
+  Widget gotoChatShop(BuildContext context) {
+    return ChatListShop();
   }
 }

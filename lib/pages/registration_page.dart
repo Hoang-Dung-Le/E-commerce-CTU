@@ -1,6 +1,8 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ctu/common/theme_helper.dart';
+import 'package:project_ctu/pages/registration_printer.dart';
 import 'package:project_ctu/pages/widgets/header_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -341,6 +343,27 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               }
                             },
                           ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(10, 20, 10, 20),
+                          //child: Text('Don\'t have an account? Create'),
+                          child: Text.rich(TextSpan(children: [
+                            TextSpan(text: "Bạn là cửa hàng in ấn?"),
+                            TextSpan(
+                              text: 'Tạo tài khoản ngay',
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              RegisterPage()));
+                                },
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).backgroundColor),
+                            ),
+                          ])),
                         ),
                       ],
                     ),
