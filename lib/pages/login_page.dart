@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:project_ctu/User.dart';
 
 import '../User.dart';
-import 'forgot_password_page.dart';
-import 'profile_page.dart';
+import '../screens/home/nhap_ma_xn.dart';
+import '../screens/home/quen_mat_khau.dart';
 import 'registration_page.dart';
 import 'widgets/header_widget.dart';
 import 'dart:convert';
@@ -141,6 +141,8 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                     onPressed: () async {
+                                      final prefs =
+                                          await SharedPreferences.getInstance();
                                       var result = (context)
                                           .read<LoginCheck>()
                                           .login(_userController.text,
@@ -149,6 +151,8 @@ class _LoginPageState extends State<LoginPage> {
                                       result.then((value) async => {
                                             if (value == 1)
                                               {
+                                                await savePassword(
+                                                    _passController.text),
                                                 await saveLoginStatus(
                                                   true,
                                                   (context)
@@ -156,9 +160,8 @@ class _LoginPageState extends State<LoginPage> {
                                                       .getUserId
                                                       .toString(),
                                                 ),
-                                                if ((context)
-                                                        .read<LoginCheck>()
-                                                        .getIsPrinter ==
+                                                if (prefs.getString(
+                                                        'isPrinter') ==
                                                     '1')
                                                   {
                                                     await Navigator.pushReplacement(
@@ -167,12 +170,40 @@ class _LoginPageState extends State<LoginPage> {
                                                             builder: (context) =>
                                                                 gotoShop(
                                                                     context)))
-                                                  },
-                                                await Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            goToHome(context)))
+                                                  }
+                                                else
+                                                  {
+                                                    await Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                goToHome(
+                                                                    context)))
+                                                  }
+                                              }
+                                            else
+                                              {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title:
+                                                            Text('Thông báo'),
+                                                        content: Text(
+                                                            'Tên tài khoản hoặc mật khẩu không chính xác'),
+                                                        actions: [
+                                                          ElevatedButton(
+                                                            child: Text('Đóng'),
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    })
                                               }
                                           });
                                     },
@@ -216,6 +247,13 @@ class _LoginPageState extends State<LoginPage> {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLoggedIn', isLoggedIn);
     prefs.setString('user_id', user_id);
+    // prefs.setString('isPrinter', isPrinter);
+  }
+
+  Future<void> savePassword(String password) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('password', password);
     // prefs.setString('isPrinter', isPrinter);
   }
 

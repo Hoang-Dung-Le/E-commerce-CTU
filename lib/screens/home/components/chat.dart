@@ -156,7 +156,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       decoration: BoxDecoration(
                         color: _messages[index].startsWith(widget.userId)
                             ? Colors.blueAccent
-                            : Colors.grey[300],
+                            : Colors.red[300],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       padding: EdgeInsets.symmetric(
@@ -165,7 +165,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       child: Text(
                         // _messages[index].replaceAll('${widget.userId}: ', ''),
-                        _messages[index].substring(1),
+                        _messages[index].substring(2),
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

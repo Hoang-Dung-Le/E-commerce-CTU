@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:project_ctu/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../home/my_product_detail_display.dart';
+
 class Product {
   final String product_id;
   final String name;
@@ -129,16 +131,28 @@ class ProductGrid extends StatelessWidget {
               children: List.generate(snapshot.data!.length, (index) {
                 return Column(
                   children: [
-                    Image.network(
-                      ip + products_url[index],
-                      fit: BoxFit.cover,
-                      width: 90,
-                      height: 130,
-                    ),
-                    Text(
-                      snapshot.data![index].name.toString(),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                    InkWell(
+                      onTap: (() {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProductManagementPage(
+                                      product: snapshot.data![index],
+                                    )));
+                      }),
+                      child: Column(children: [
+                        Image.network(
+                          ip + products_url[index],
+                          fit: BoxFit.cover,
+                          width: 90,
+                          height: 130,
+                        ),
+                        Text(
+                          snapshot.data![index].name.toString(),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                        ),
+                      ]),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),

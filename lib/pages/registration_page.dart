@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ctu/common/theme_helper.dart';
+import 'package:project_ctu/pages/login_page.dart';
 import 'package:project_ctu/pages/registration_printer.dart';
 import 'package:project_ctu/pages/widgets/header_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,7 +14,6 @@ import 'dart:async';
 
 import '../User.dart';
 import '../screens/home/components/home_page.dart';
-import 'profile_page.dart';
 
 class RegistrationPage extends StatefulWidget {
   @override
@@ -34,6 +34,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController _passwordConller = new TextEditingController();
   TextEditingController _passwordConller2 = new TextEditingController();
   TextEditingController _collegeController = new TextEditingController();
+  var fac_value = 'Trường CNTT&TT';
 
   final List<String> genderItems = [
     'Trường CNTT&TT',
@@ -45,8 +46,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String? selectedValue;
   final _formKey2 = GlobalKey<FormState>();
 
-  Future<User> createUser(String email, String tendang_nhap, String password,
-      String fac_id, String img_id) async {
+  Future<User> createUser(
+      String email, String tendang_nhap, String password, String fac_id) async {
     final response = await http.post(
       Uri.parse('http://10.0.2.2:3000/api/v1/create-user'),
       headers: <String, String>{
@@ -57,7 +58,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
         'tendang_nhap': tendang_nhap,
         'password': password,
         'fac_id': fac_id,
-        'img_id': img_id
       }),
     );
 
@@ -72,6 +72,29 @@ class _RegistrationPageState extends State<RegistrationPage> {
           password: "",
           fac_id: 0,
           img_id: 0);
+    }
+  }
+
+  Future<bool> checkUsername(String tendang_nhap) async {
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:3000/api/v1/checkUserName'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'tendang_nhap': tendang_nhap,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      var result = jsonDecode(response.body)['check'];
+      if (result == '0') {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
     }
   }
 
@@ -160,6 +183,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         ),
                         Container(
                           child: DropdownButtonFormField2(
+                            value: fac_value,
                             decoration: InputDecoration(
                               //Add isDense true and zero Padding.
                               //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
@@ -205,6 +229,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             },
                             onChanged: (value) {
                               //Do something when changing the item if you want.
+                              setState(() {
+                                fac_value = value!;
+                              });
                             },
                             onSaved: (value) {
                               selectedValue = value.toString();
@@ -314,33 +341,70 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             ),
                             onPressed: () {
                               userValid = true;
-                              var idx = genderItems.indexWhere(
-                                      (element) => element == selectedValue) +
-                                  1;
-                              Future<User> _futureUser = createUser(
-                                  _emailController.text,
-                                  _userController.text,
-                                  _passwordConller.text,
-                                  '${idx}',
-                                  '1');
-                              _futureUser.then((value) => {
-                                    if (value.tendang_nhap == "")
-                                      {userValid = false}
+                              late var index;
+                              var user = checkUsername(_userController.text);
+                              var _futureUser;
+                              late var fac_id;
+                              if (fac_value == 'Trường CNTT&TT') {
+                                index = '1';
+                              } else if (fac_value == 'Trường Bách Khoa') {
+                                index = '2';
+                              } else if (fac_value == 'Trường Kinh Tế') {
+                                index = '3';
+                              } else {
+                                index = '4';
+                              }
+                              user.then((value) => {
+                                    if (value == false)
+                                      {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Thông báo'),
+                                              content: Text(
+                                                  'Tên đăng nhập đã tồn tại'),
+                                              actions: [
+                                                ElevatedButton(
+                                                  child: Text('Đóng'),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                    setState(() {
+                                                      _userController.text = "";
+                                                      userValid = false;
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        )
+                                      }
                                     else
                                       {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: goToHome))
+                                        _futureUser = createUser(
+                                          _emailController.text,
+                                          _userController.text,
+                                          _passwordConller.text,
+                                          index,
+                                        ),
+                                        _futureUser.then((value) => {
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          LoginPage()))
+                                            })
                                       }
                                   });
-                              if (userValid == false) {
-                                var snackBar = SnackBar(
-                                    content: Text('Tên đăng nhập đã tồn tại'));
-                                // Step 3
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-                              }
+
+                              // if (userValid == false) {
+                              //   var snackBar = SnackBar(
+                              //       content: Text('Tên đăng nhập đã tồn tại'));
+                              //   // Step 3
+                              //   ScaffoldMessenger.of(context)
+                              //       .showSnackBar(snackBar);
+                              // }
                             },
                           ),
                         ),

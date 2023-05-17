@@ -56,74 +56,119 @@ class Body extends StatelessWidget {
                   left: 0,
                   right: 0,
                   child: Container(
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    padding: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                    height: 54,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          offset: Offset(0, 10),
-                          blurRadius: 50,
-                          color: kPrimaryColor.withOpacity(0.23),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: TextField(
-                            controller: _searchController,
-                            onChanged: (value) {},
-                            decoration: InputDecoration(
-                              hintText: "Search",
-
-                              hintStyle: TextStyle(
-                                color: kPrimaryColor.withOpacity(0.5),
-                              ),
-                              enabledBorder: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              // surffix isn't working properly  with SVG
-                              // thats why we use row
-                              // suffixIcon: SvgPicture.asset("assets/icons/search.svg"),
-                            ),
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                      height: 54,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0, 10),
+                            blurRadius: 50,
+                            color: kPrimaryColor.withOpacity(0.23),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: 'Nhập từ khóa',
+                          prefixIcon: IconButton(
+                            icon: Icon(Icons.search),
+                            onPressed: () {
+                              // Hành động khi nút tìm kiếm được nhấn
+                              // print('Tìm kiếm: ' + searchController.text);
+                            },
                           ),
                         ),
-                        ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SearchDocument(
-                                            searchName: _searchController.text
-                                                .toString(),
-                                          )));
-                            },
-                            child: SvgPicture.asset("assets/icons/search.svg")),
-                      ],
-                    ),
-                  ),
+                        controller: _searchController,
+                        onSubmitted: (value) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SearchDocument(
+                                        searchName:
+                                            _searchController.text.toString(),
+                                        author: '',
+                                        sort_selection: '',
+                                        subject: '',
+                                        fac_id: '0',
+                                      )));
+                        },
+                      )),
                 ),
               ],
             ),
           ),
-          TitleWithMoreBtn(title: "Tài liệu Trường CNTT&TT", press: () {}),
+          TitleWithMoreBtn(
+              title: "Tài liệu Trường CNTT&TT",
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchDocument(
+                              searchName: "",
+                              author: '',
+                              sort_selection: '',
+                              subject: '',
+                              fac_id: '1',
+                            )));
+              }),
           RecomendsPlants(
             fac_id: "1",
           ),
           // FeaturedPlants(),
-          TitleWithMoreBtn(title: "Tài liệu trường Bách Khoa", press: () {}),
+          TitleWithMoreBtn(
+              title: "Tài liệu trường Bách Khoa",
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchDocument(
+                              searchName: "",
+                              author: '',
+                              sort_selection: '',
+                              subject: '',
+                              fac_id: '2',
+                            )));
+              }),
           // FeaturedPlants(fac_id: "2"),
           RecomendsPlants(
             fac_id: "2",
           ),
-          TitleWithMoreBtn(title: "Tài liệu trường Thuỷ sản", press: () {}),
+          TitleWithMoreBtn(
+              title: "Tài liệu trường Kinh Tế",
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchDocument(
+                              searchName: "",
+                              author: '',
+                              sort_selection: '',
+                              subject: '',
+                              fac_id: '3',
+                            )));
+              }),
           RecomendsPlants(
             fac_id: "3",
           ),
-          TitleWithMoreBtn(title: "Tài liệu trường Kinh Tế", press: () {}),
+          TitleWithMoreBtn(
+              title: "Tài liệu trường Nông nghiệp",
+              press: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchDocument(
+                              searchName: "",
+                              author: '',
+                              sort_selection: '',
+                              subject: '',
+                              fac_id: '4',
+                            )));
+              }),
           RecomendsPlants(
             fac_id: "4",
           ),

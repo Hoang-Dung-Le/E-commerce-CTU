@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../../products.dart';
+import '../../details/components/detail_product_version2.dart';
 
 class RecomendsPlants extends StatefulWidget {
   const RecomendsPlants({super.key, required this.fac_id});
@@ -159,10 +160,19 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
             price: products[0].price!.toInt(),
             press: () {
               // print("gia tri product" + products.length.toString());
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => Detail(
+              //       product: products[0],
+              //       url: ip + urlImgs[0].url,
+              //     ),
+              //   ),
+              // );
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => Detail(
+                  builder: (context) => ProductPage(
                     product: products[0],
                     url: ip + urlImgs[0].url,
                   ),
@@ -233,7 +243,11 @@ class RecomendPlantCard extends StatelessWidget {
       width: size.width * 0.4,
       child: Column(
         children: <Widget>[
-          Container(height: 130, child: Image.network(image)),
+          Container(
+            height: 130,
+            child: Image.network(image),
+            color: Colors.white,
+          ),
           GestureDetector(
             onTap: press,
             child: Container(

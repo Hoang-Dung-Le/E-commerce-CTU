@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants.dart';
+import '../doi_mat_khau.dart';
 import '../message_screen.dart';
 
 class ProfilePageShop extends StatefulWidget {
@@ -102,6 +103,14 @@ class _ProfilePageState extends State<ProfilePageShop> {
             Text(email),
             Text(phone),
             Text('Open time: $openTime - Close time: $closeTime'),
+            ElevatedButton(
+                onPressed: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => doiMK(context)))
+                    },
+                child: Text("đổi mật khẩu"))
           ],
         ),
       ),
@@ -129,6 +138,10 @@ class _ProfilePageState extends State<ProfilePageShop> {
         ),
       ),
     );
+  }
+
+  Widget doiMK(BuildContext context) {
+    return ChangePasswordPage();
   }
 
   Widget gotoLogin(BuildContext context) {

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:project_ctu/pages/comment_page.dart';
-import 'package:project_ctu/pages/profile_page.dart';
 import 'package:project_ctu/pages/question_display.dart';
 import 'package:project_ctu/pages/uploadProduct.dart';
 
 import '../constants.dart';
+import '../pages/question_ver2.dart';
+import '../pages/upload_products_version__2.dart';
 import '../screens/home/user_profile.dart';
 
 class MyBottomNavBar extends StatelessWidget {
@@ -68,7 +69,7 @@ class MyBottomNavBar extends StatelessWidget {
   }
 
   Widget goToQuestionPage(BuildContext context) {
-    return Question_Display();
+    return QuestionListPage();
   }
 
   Widget goToCommentPage(BuildContext context) {
@@ -76,6 +77,6 @@ class MyBottomNavBar extends StatelessWidget {
   }
 
   Widget gotoUploadImage(BuildContext context) {
-    return UpLoadImage();
+    return ProductUploadPage();
   }
 }
