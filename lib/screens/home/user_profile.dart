@@ -3,6 +3,7 @@ import 'package:project_ctu/pages/login_page.dart';
 import 'package:project_ctu/screens/details/components/myproducts.dart';
 import 'package:project_ctu/screens/home/components/list_shop.dart';
 import 'package:project_ctu/screens/home/doi_mat_khau.dart';
+import 'package:project_ctu/screens/home/ds_yeu_thich.dart';
 import 'package:project_ctu/screens/home/i4.dart';
 import 'package:project_ctu/screens/home/message_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -306,6 +307,17 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
               },
               child: Text("Các sản phẩm bạn đã đăng"),
             ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => DSYeuThich()),
+                );
+              },
+              child: Text("Các sản phẩm yêu thích"),
+            ),
+            SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -315,6 +327,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
               },
               child: Text("Shop in ấn"),
             ),
+            SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -324,6 +337,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
               },
               child: Text("Lịch sử trò chuyện"),
             ),
+            SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(context,
@@ -331,6 +345,7 @@ class _ProfileUserPageState extends State<ProfileUserPage> {
               },
               child: Text("Tin nhắn với shop"),
             ),
+            SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(

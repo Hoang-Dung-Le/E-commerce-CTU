@@ -439,9 +439,6 @@ class _SearchDocumentState extends State<SearchDocument> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 IconButton(
-                    onPressed: () {},
-                    icon: SvgPicture.asset("assets/icons/sort_.svg")),
-                IconButton(
                     onPressed: (() {
                       showDialog(
                         context: context,

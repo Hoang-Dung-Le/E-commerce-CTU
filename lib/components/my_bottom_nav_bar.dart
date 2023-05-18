@@ -69,7 +69,7 @@ class MyBottomNavBar extends StatelessWidget {
   }
 
   Widget goToQuestionPage(BuildContext context) {
-    return QuestionListPage();
+    return QuestionListScreen();
   }
 
   Widget goToCommentPage(BuildContext context) {

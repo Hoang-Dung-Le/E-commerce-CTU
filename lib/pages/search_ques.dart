@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:project_ctu/pages/questiondetail.dart';
-import 'package:project_ctu/pages/search_ques.dart';
 import 'dart:convert';
 
 import 'package:project_ctu/pages/uploadQuestion.dart';
@@ -20,15 +19,21 @@ class Question {
   });
 }
 
-class QuestionListScreen extends StatefulWidget {
+class SearchQuestion extends StatefulWidget {
+  final String searchName;
+
+  const SearchQuestion({super.key, required this.searchName});
   @override
-  _QuestionListScreenState createState() => _QuestionListScreenState();
+  _SearchQuestion createState() => _SearchQuestion(searchName);
 }
 
-class _QuestionListScreenState extends State<QuestionListScreen> {
+class _SearchQuestion extends State<SearchQuestion> {
+  final String searchName;
   List<Question> questions = [];
   bool isLoading = true;
   TextEditingController searchController = TextEditingController();
+
+  _SearchQuestion(this.searchName);
 
   @override
   void initState() {
@@ -38,8 +43,16 @@ class _QuestionListScreenState extends State<QuestionListScreen> {
 
   Future<void> fetchQuestions() async {
     try {
-      final response =
-          await http.get(Uri.parse('http://10.0.2.2:3000/api/v1/getQuestions'));
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:3000/api/v1/searchQuestion'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          "searchName": searchName
+          // "product_date": product.product_date.toString()
+        }),
+      );
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body)['result'];
         List<Question> questionList = jsonData.map<Question>((item) {
@@ -124,17 +137,25 @@ class _QuestionListScreenState extends State<QuestionListScreen> {
       child: TextField(
         controller: searchController,
         onChanged: (value) {
-          // setState(() {
-          //   // Lọc danh sách câu hỏi khi giá trị trong thanh tìm kiếm thay đổi
-          //   final filteredQuestions = searchQuestions(value);
-          //   questions = filteredQuestions;
-          // });
+//           setState(() {
+//             // Lọc danh sách câu hỏi khi giá trị trong thanh tìm kiếm thay đổi
+//             if (value.length == 0){
+//               setState(() {
+
+//               });
+//             } else {
+// final filteredQuestions = searchQuestions(value);
+//             questions = filteredQuestions;
+//             }
+
+//           }
+//           );
         },
         decoration: InputDecoration(
           hintText: 'Search questions',
           prefixIcon: Icon(Icons.search),
           suffixIcon: IconButton(
-            icon: Icon(Icons.clear),
+            icon: Icon(Icons.search),
             onPressed: () {
               // Xóa giá trị trong thanh tìm kiếm
               // searchController.clear();

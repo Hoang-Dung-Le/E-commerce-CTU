@@ -99,15 +99,19 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         title: Text('Đổi mật khẩu'),
       ),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextFormField(
                   obscureText: true,
-                  decoration: InputDecoration(labelText: 'Mật khẩu cũ'),
+                  decoration: InputDecoration(
+                    labelText: 'Mật khẩu cũ',
+                    border: OutlineInputBorder(),
+                  ),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Vui lòng nhập mật khẩu cũ';
@@ -118,9 +122,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     _oldPassword = value!;
                   },
                 ),
+                SizedBox(height: 16.0),
                 TextFormField(
                   obscureText: true,
-                  decoration: InputDecoration(labelText: 'Mật khẩu mới'),
+                  decoration: InputDecoration(
+                    labelText: 'Mật khẩu mới',
+                    border: OutlineInputBorder(),
+                  ),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Vui lòng nhập mật khẩu mới';
@@ -131,10 +139,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     _newPassword = value!;
                   },
                 ),
+                SizedBox(height: 16.0),
                 TextFormField(
                   obscureText: true,
-                  decoration:
-                      InputDecoration(labelText: 'Nhập lại mật khẩu mới'),
+                  decoration: InputDecoration(
+                    labelText: 'Nhập lại mật khẩu mới',
+                    border: OutlineInputBorder(),
+                  ),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Vui lòng nhập lại mật khẩu mới';
@@ -145,7 +156,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     _confirmPassword = value!;
                   },
                 ),
-                SizedBox(height: 16.0),
+                SizedBox(height: 24.0),
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {

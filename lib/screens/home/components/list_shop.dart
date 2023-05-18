@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:project_ctu/pages/login_page.dart';
 import 'package:project_ctu/screens/home/components/chat.dart';
+import 'package:project_ctu/screens/home/shop_display.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -96,8 +97,18 @@ class _ListShop extends State<ListShop> {
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               child: Row(
                 children: [
-                  CircleAvatar(
-                    child: Text(users[index].substring(0, 1)),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ShopIf(
+                                    id: ids[index].toString(),
+                                  )));
+                    },
+                    child: CircleAvatar(
+                      child: Text(users[index].substring(0, 1)),
+                    ),
                   ),
                   SizedBox(width: 16.0),
                   Text(

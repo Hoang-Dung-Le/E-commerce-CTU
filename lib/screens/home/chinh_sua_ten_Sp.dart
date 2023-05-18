@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:project_ctu/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../details/components/myproducts.dart';
+
 class EditProductNamePage extends StatefulWidget {
   final String currentName;
   final String product_id;
@@ -55,7 +57,7 @@ class _EditProductNamePageState extends State<EditProductNamePage> {
               TextButton(
                 child: Text('Đóng'),
                 onPressed: () {
-                  Navigator.pop(context, name);
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -73,7 +75,8 @@ class _EditProductNamePageState extends State<EditProductNamePage> {
               TextButton(
                 child: Text('Đóng'),
                 onPressed: () {
-                  Navigator.pop(context, name);
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => ProductGrid()));
                 },
               ),
             ],

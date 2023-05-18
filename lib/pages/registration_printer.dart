@@ -282,6 +282,16 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final ImagePicker picker = ImagePicker();
 
+  int parse(string_test) {
+    int result = 0;
+    for (int i = 0; i < string_test.length; i++) {
+      if (int.tryParse(string_test[i]) != null) {
+        result = result * 10 + int.parse(string_test[i]);
+      }
+    }
+    return result;
+  }
+
   Future getImage(ImageSource media) async {
     var img = await picker.pickImage(source: media);
     var request = http.MultipartRequest(
@@ -292,7 +302,7 @@ class _RegisterPageState extends State<RegisterPage> {
     var res = await request.send();
     // print(res.headers.keys.toString() + " day la header");
     var res_1 = await res.stream.bytesToString();
-    img_id_uploaded = res_1;
+    img_id_uploaded = parse(res_1).toString();
     print("day la res 1 " + res_1.toString());
     setState(() {
       image = img;
@@ -541,11 +551,28 @@ class _RegisterPageState extends State<RegisterPage> {
                               result.then((value) => {
                                     if (value == true)
                                       {
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginPage()))
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Thông báo'),
+                                              content:
+                                                  Text('Đăng ký thành công'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                LoginPage()));
+                                                  },
+                                                  child: Text('OK'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        )
                                       }
                                   })
                             }

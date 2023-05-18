@@ -172,7 +172,7 @@ class _RecomendsPlantsState extends State<RecomendsPlants> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProductPage(
+                  builder: (context) => Detail(
                     product: products[0],
                     url: ip + urlImgs[0].url,
                   ),

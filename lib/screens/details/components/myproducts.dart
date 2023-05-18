@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:project_ctu/components/my_bottom_nav_bar.dart';
 import 'package:project_ctu/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -95,7 +96,7 @@ class ProductGrid extends StatelessWidget {
       }),
     );
     if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body)['data'];
+      var jsonData = jsonDecode(response.body)['data'];
       List<Product> products = [];
       for (var i = 0; i < jsonData.length; i++) {
         final imgResponse = await http.post(
@@ -121,7 +122,7 @@ class ProductGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Tài liệu đã đăng")),
+      bottomNavigationBar: MyBottomNavBar(),
       body: FutureBuilder<List<Product>>(
         future: _fetchProducts(),
         builder: (context, snapshot) {

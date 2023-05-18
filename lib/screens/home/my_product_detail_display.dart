@@ -3,6 +3,8 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 import 'package:project_ctu/products.dart';
+import 'package:project_ctu/screens/home/chinh_sua_gia.dart';
+import 'package:project_ctu/screens/home/chinh_sua_mo_ta.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -73,8 +75,13 @@ class _ProductManagementPageState extends State<ProductManagementPage> {
               leading: Icon(Icons.edit),
               title: Text(widget.product.detail.toString()),
               onTap: () {
-                // Xử lý sự kiện chỉnh sửa mô tả sản phẩm
-                // ...
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditProductDescriptionPage(
+                              product_id: widget.product.product_id,
+                              currentDescription: widget.product.detail,
+                            )));
               },
             ),
             Padding(
@@ -91,8 +98,13 @@ class _ProductManagementPageState extends State<ProductManagementPage> {
               leading: Icon(Icons.edit),
               title: Text(widget.product.price.toString()),
               onTap: () {
-                // Xử lý sự kiện chỉnh sửa giá sản phẩm
-                // ...
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditProductPricePage(
+                              product_id: widget.product.product_id,
+                              currentPrice: widget.product.price,
+                            )));
               },
             ),
             // Thêm các thông tin khác và xử lý sự kiện chỉnh sửa tương tự
